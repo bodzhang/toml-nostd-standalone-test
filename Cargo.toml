@@ -1,0 +1,21 @@
+[package]
+name = "toml-nostd-standalone-test"
+version = "0.1.0"
+edition = "2021"
+
+# No-std test to verify the f64::copysign issue
+[[bin]]
+name = "nostd-test"
+path = "src/nostd_test.rs"
+
+[dependencies]
+# Dependencies for no_std test - these will fail to compile on no_std targets
+# because toml v0.9.2 uses f64::copysign() which is not available in no_std
+toml = { version = "0.9.2", default-features = false, features = ["parse", "serde"] }
+serde = { version = "1.0", default-features = false, features = ["derive", "alloc"] }
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
